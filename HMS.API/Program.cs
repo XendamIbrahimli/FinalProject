@@ -1,4 +1,5 @@
 
+using HMS.API.Registrations;
 using HMS.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,8 @@ namespace HMS.API
 
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer
                 (builder.Configuration.GetConnectionString("local")));
+
+            builder.Services.AddApplicationServices();
 
             var app = builder.Build();
 
