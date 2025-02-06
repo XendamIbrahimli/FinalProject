@@ -1,6 +1,9 @@
 
 using HMS.API.Registrations;
+using HMS.BL.Extensions;
+using HMS.Core.Models;
 using HMS.DAL.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HMS.API
@@ -21,6 +24,15 @@ namespace HMS.API
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer
                 (builder.Configuration.GetConnectionString("local")));
 
+            builder.Services.AddIdentity<User, IdentityRole>(x =>
+            {
+                x.Password.RequireUppercase = false;
+                x.Password.RequireLowercase = false;
+                x.Password.RequiredLength = 3;
+                x.Password.RequireDigit = false;
+                x.Password.RequireNonAlphanumeric = false;
+            }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
+
             builder.Services.AddApplicationServices();
 
             var app = builder.Build();
@@ -33,7 +45,7 @@ namespace HMS.API
             }
 
             app.UseHttpsRedirection();
-
+            //app.UseUserSeed(); //SeedData
             app.UseStaticFiles();
 
             app.UseAuthorization();
