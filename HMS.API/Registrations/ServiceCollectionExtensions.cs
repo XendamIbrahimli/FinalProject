@@ -1,4 +1,6 @@
-﻿using HMS.Core.Repositories;
+﻿using HMS.BL.Services;
+using HMS.Core.Repositories;
+using HMS.Core.Services;
 using HMS.DAL.Repositories;
 
 namespace HMS.API.Registrations
@@ -12,6 +14,7 @@ namespace HMS.API.Registrations
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IPatienceRepository, PatienceRepository>();
 
+            services.AddScoped<IDepartmentService, DepartmentService>();
             return services;
         }
     }

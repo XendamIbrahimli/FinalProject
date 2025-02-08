@@ -18,4 +18,8 @@
     <ProjectReference Include="..\HMS.BL\HMS.BL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
