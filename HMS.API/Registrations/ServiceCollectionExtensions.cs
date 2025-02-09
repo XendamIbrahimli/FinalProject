@@ -15,6 +15,7 @@ namespace HMS.API.Registrations
             services.AddScoped<IPatienceRepository, PatienceRepository>();
 
             services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IAuthService, AuthService>();
             return services;
         }
     }
