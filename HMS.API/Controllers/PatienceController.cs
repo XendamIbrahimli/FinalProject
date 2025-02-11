@@ -7,6 +7,5 @@ namespace HMS.API.Controllers
     [ApiController]
     public class PatienceController : ControllerBase
     {
-        
     }
 }

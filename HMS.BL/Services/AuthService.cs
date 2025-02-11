@@ -5,6 +5,7 @@ using HMS.Core.Repositories;
 using HMS.Core.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace HMS.BL.Services
 {
-    public class AuthService(IPatienceRepository _PatienceRepo, UserManager<User> _userManager) : IAuthService
+    public class AuthService(IPatienceRepository _PatienceRepo, UserManager<User> _userManager,IEmailService _emailService) : IAuthService
     {
         public async Task<bool> RegisterAsPatienceAsync(PatienceCreateDto dto)
         {
@@ -23,6 +24,7 @@ namespace HMS.BL.Services
                 throw new ExistException("This Fullname already exist");
             if(await _userManager.FindByNameAsync(dto.Username)!=null)
                 throw new ExistException("This Username already exist");
+
 
             User user=new User()
             {
@@ -59,6 +61,9 @@ namespace HMS.BL.Services
             bool f=await _PatienceRepo.AddAsync(patience);
             await _PatienceRepo.SaveAsync();
 
+            //Send Verification code
+
+            await _emailService.SendConfimationCodeAsync(user.Email);
 
             return f;
         }

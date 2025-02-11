@@ -1,6 +1,7 @@
 
 using HMS.API.Registrations;
 using HMS.BL.Extensions;
+using HMS.BL.Helpers;
 using HMS.Core.Models;
 using HMS.DAL.Context;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +36,7 @@ namespace HMS.API
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
 
             builder.Services.AddApplicationServices();
+            builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
 
             var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using HMS.BL.Services;
+﻿using HMS.BL.Helpers;
+using HMS.BL.Services;
 using HMS.Core.Repositories;
 using HMS.Core.Services;
 using HMS.DAL.Repositories;
@@ -16,6 +17,10 @@ namespace HMS.API.Registrations
 
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEmailService, EmailService>();
+
+
+            services.AddMemoryCache();
             return services;
         }
     }

@@ -1,4 +1,4 @@
-﻿using HMS.Core.Dtos.PatienceDtos;
+﻿using HMS.Core.Dtos.EmailServiceDtos;
 using HMS.Core.Exceptions.Common;
 using HMS.Core.Services;
 using Microsoft.AspNetCore.Http;
@@ -8,19 +8,19 @@ namespace HMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IAuthService _service) : ControllerBase
+    public class EmailController(IEmailService _service) : ControllerBase
     {
-        [HttpPost("AsPatience")]
-        public async Task<IActionResult> Register(PatienceCreateDto dto)
+        [HttpPost("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(EmailDto dto)
         {
             try
             {
-                var result=await _service.RegisterAsPatienceAsync(dto);
+                var result =await _service.ConfirmEmailCodeAsync(dto);
                 if (!result)
                 {
-                    return BadRequest("Failed to Register");
+                    return BadRequest("Wrong code");
                 }
-                return Ok("Check your email and confirm!");
+                return Ok("Registered successfully");
             }
             catch (Exception ex)
             {
@@ -37,6 +37,16 @@ namespace HMS.API.Controllers
                     ex.Message
                 });
             }
+        }
+        [HttpPost("sendNewCode")]
+        public async Task<IActionResult> SendNewCode(string email)
+        {
+            if(email.Contains('@') && email.Length <= 128)
+            {
+                await _service.SendConfimationCodeAsync(email);
+                return Ok("Message was send");
+            }
+            return BadRequest("Enter email correctly!");
         }
     }
 }
