@@ -12,12 +12,14 @@ namespace HMS.Core.Models
         public string Fullname { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;
         public string FullInfo { get; set; } = null!;
+        public string LicenseNumber { get; set; } = null!;
+        public bool IsApproved { get; set; } = false;
         public int ExperienceYear { get; set; }
-        public ICollection<Appointment>? Appointments { get; set; }
         public Guid? DepartmentId { get; set; }
         public Department? Department { get; set; }
         public string? UserId { get; set; }
         public User? User { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; }
 
     }
 }

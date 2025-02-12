@@ -15,6 +15,5 @@ namespace HMS.Core.Models
         public ICollection<Appointment>? Appointments { get; set; }
         public string? UserId { get; set; }
         public User? User { get; set; }
-        public bool IsConfirmed {  get; set; }=false;
     }
 }

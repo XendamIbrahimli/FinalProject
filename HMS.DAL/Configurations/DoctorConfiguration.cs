@@ -21,6 +21,9 @@ namespace HMS.DAL.Configurations
             builder.Property(x=>x.FullInfo)
                 .IsRequired()
                 .HasMaxLength(256);
+            builder.Property(x => x.LicenseNumber)
+                .IsRequired()
+                .HasMaxLength(12);
             builder.Property(x=>x.ImageUrl)
                 .IsRequired()
                 .HasMaxLength(256);

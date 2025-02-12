@@ -13,30 +13,13 @@ namespace HMS.API.Controllers
         [HttpPost("confirmEmail")]
         public async Task<IActionResult> ConfirmEmail(EmailDto dto)
         {
-            try
+            var result = await _service.ConfirmEmailCodeAsync(dto);
+            if (!result)
             {
-                var result =await _service.ConfirmEmailCodeAsync(dto);
-                if (!result)
-                {
-                    return BadRequest("Wrong code");
-                }
-                return Ok("Registered successfully");
+                return BadRequest("Wrong code");
             }
-            catch (Exception ex)
-            {
-                if (ex is IBaseException Bex)
-                {
-                    return StatusCode(Bex.StatusCode, new
-                    {
-                        Message = Bex.ErrorMessage,
-                        StatusCode = Bex.StatusCode
-                    });
-                }
-                return BadRequest(new
-                {
-                    ex.Message
-                });
-            }
+            return Ok("Registered successfully");
+
         }
         [HttpPost("sendNewCode")]
         public async Task<IActionResult> SendNewCode(string email)
