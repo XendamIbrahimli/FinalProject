@@ -1,7 +1,10 @@
-﻿using HMS.Core.Dtos.DoctorDtos;
+﻿using HMS.BL.Helpers;
+using HMS.Core.Dtos.AuthDtos;
+using HMS.Core.Dtos.DoctorDtos;
 using HMS.Core.Dtos.PatienceDtos;
 using HMS.Core.Exceptions.Common;
 using HMS.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +38,7 @@ namespace HMS.API.Controllers
 
         }
         [HttpPost("ConfirmDoctorAccount")]
+        [Authorize(Roles =RoleConstants.Admin)]
         public async Task<IActionResult> ConfirmDoctorAccount(Guid id)
         {
             var result = await _service.ConfirmDoctorAccountAsync(id);
@@ -43,6 +47,11 @@ namespace HMS.API.Controllers
                 return BadRequest("Failed to Confirm");
             }
             return Ok("Account successfully confirmed");
+        }
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody]LoginDto dto)
+        {
+            return Ok(await _service.LoginAsync(dto));
         }
 
     }

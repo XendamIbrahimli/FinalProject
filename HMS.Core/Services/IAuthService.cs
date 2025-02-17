@@ -1,4 +1,5 @@
-﻿using HMS.Core.Dtos.DoctorDtos;
+﻿using HMS.Core.Dtos.AuthDtos;
+using HMS.Core.Dtos.DoctorDtos;
 using HMS.Core.Dtos.PatienceDtos;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,8 @@ namespace HMS.Core.Services
         Task<bool> RegisterAsPatienceAsync(PatienceCreateDto dto);
         Task<bool> RegisterAsDoctorAsync(DoctorCreateDto dto);
         Task<bool> ConfirmDoctorAccountAsync(Guid id);
+        Task<string> LoginAsync(LoginDto dto);
+        string GenerateToken(string userId, string username, string email, string role);
+        Task<bool> LogOutAsync();
     }
 }

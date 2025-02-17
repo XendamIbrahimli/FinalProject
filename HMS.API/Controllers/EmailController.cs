@@ -1,6 +1,8 @@
-﻿using HMS.Core.Dtos.EmailServiceDtos;
+﻿using HMS.BL.Helpers;
+using HMS.Core.Dtos.EmailServiceDtos;
 using HMS.Core.Exceptions.Common;
 using HMS.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

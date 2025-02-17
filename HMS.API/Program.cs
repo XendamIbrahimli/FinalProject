@@ -4,9 +4,12 @@ using HMS.BL.Extensions;
 using HMS.BL.Helpers;
 using HMS.Core.Models;
 using HMS.DAL.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace HMS.API
 {
@@ -24,7 +27,36 @@ namespace HMS.API
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
+            builder.Services.AddLogging(logging =>
+            {
+                logging.AddConsole();
+                logging.AddDebug();
+            });
 
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer
                 (builder.Configuration.GetConnectionString("local")));
@@ -38,8 +70,10 @@ namespace HMS.API
                 x.Password.RequireNonAlphanumeric = false;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
 
-            builder.Services.AddApplicationServices();
+            builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection("Smtp"));
+
+            //builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -54,6 +88,7 @@ namespace HMS.API
             //app.UseUserSeed(); //SeedData
             app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

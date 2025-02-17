@@ -1,7 +1,11 @@
-﻿using HMS.Core.Dtos.DepartmentDtos;
+﻿using HMS.BL.Enums;
+using HMS.BL.Helpers;
+using HMS.Core.Dtos.DepartmentDtos;
 using HMS.Core.Exceptions;
 using HMS.Core.Exceptions.Common;
 using HMS.Core.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +14,7 @@ namespace HMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentControlle(IDepartmentService _service) : ControllerBase
+    public class DepartmentController(IDepartmentService _service) : ControllerBase
     {
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromForm]DepartmentCreateDto dto)
@@ -34,6 +38,7 @@ namespace HMS.API.Controllers
 
         //}
         [HttpGet]
+        [Authorize(Roles =RoleConstants.AdminAndModerator)]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _service.GetAll());
