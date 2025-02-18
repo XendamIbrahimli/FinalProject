@@ -23,8 +23,9 @@ namespace HMS.API.Registrations
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
 
-
+            services.AddHttpContextAccessor();
             services.AddMemoryCache();
 
             services.Configure<JwtOptions>(config.GetSection(JwtOptions.Jwt));
@@ -55,8 +56,6 @@ namespace HMS.API.Registrations
                     ClockSkew = TimeSpan.Zero
                 };
             });
-
-
             return services;
         }
     }

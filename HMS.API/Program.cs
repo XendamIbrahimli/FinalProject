@@ -83,7 +83,7 @@ namespace HMS.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            
             app.UseHttpsRedirection();
             //app.UseUserSeed(); //SeedData
             app.UseStaticFiles();

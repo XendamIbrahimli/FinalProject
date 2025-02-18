@@ -72,15 +72,18 @@ namespace HMS.BL.Services
         {
             User? user;
             if(dto.UserNameOrEmail.Contains('@'))
-                user=await _userManager.FindByEmailAsync(dto.UserNameOrEmail);
+                user=await _userManager.Users.Include(x=>x.Doctor).FirstOrDefaultAsync(x=>x.Email==dto.UserNameOrEmail);
             else
-                user=await _userManager.FindByNameAsync(dto.UserNameOrEmail);
+                user=await _userManager.Users.Include(x => x.Doctor).FirstOrDefaultAsync(x => x.UserName == dto.UserNameOrEmail); ;
 
             if (user == null || !await _userManager.CheckPasswordAsync(user,dto.Password))
                 throw new NullReferenceException("Email/Username or Password is wrong");
 
-            if (user.Doctor?.IsApproved == false)
-                throw new NotPermissionException ("Your account isn't approved by admin");
+            if(user.Doctor!=null)
+            {
+                if (user.Doctor!.IsApproved == false)
+                    throw new NotPermissionException ("Your account isn't approved by admin");
+            }
 
             var roles = await _userManager.GetRolesAsync(user);
             var token = GenerateToken(user.Id, user.UserName!, user.Email!, roles[0]);

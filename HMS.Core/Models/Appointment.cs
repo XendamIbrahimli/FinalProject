@@ -14,6 +14,7 @@ namespace HMS.Core.Models
         public Guid? PatienceId { get; set; }
         public Doctor? Doctor { get; set; }
         public Patience? Patience { get; set; }
+        public DateTime DateTime { get; set; }
 
     }
 }
