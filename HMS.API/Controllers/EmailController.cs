@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class EmailController(IEmailService _service) : ControllerBase
     {
-        [HttpPost("confirmEmail")]
+        [HttpPost]
         public async Task<IActionResult> ConfirmEmail(EmailDto dto)
         {
             var result = await _service.ConfirmEmailCodeAsync(dto);
@@ -23,7 +23,7 @@ namespace HMS.API.Controllers
             return Ok("Registered successfully");
 
         }
-        [HttpPost("sendNewCode")]
+        [HttpPost]
         public async Task<IActionResult> SendNewCode(string email)
         {
             if(email.Contains('@') && email.Length <= 128)

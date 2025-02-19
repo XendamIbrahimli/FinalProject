@@ -12,11 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class DepartmentController(IDepartmentService _service) : ControllerBase
     {
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromForm]DepartmentCreateDto dto)
         {
             bool result = await _service.CreateAsync(dto);
@@ -26,7 +26,7 @@ namespace HMS.API.Controllers
             }
             return Ok("Department Created successfully");
         }
-        //[HttpPost("create-range")]
+        //[HttpPost]
         //public async Task<IActionResult> CreateRange([FromForm]List<DepartmentCreateDto> list)
         //{
         //        bool result = await _service.CreateRangeAsync(list);
@@ -45,7 +45,7 @@ namespace HMS.API.Controllers
 
         }
 
-        [HttpGet("ById")]
+        [HttpGet]
         public async Task<IActionResult> GetById(Guid id)
         {
             return Ok(await _service.GetByIdAsync(id));

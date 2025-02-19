@@ -1,4 +1,5 @@
 ﻿using HMS.Core.Dtos.AppointmentDtos;
+using HMS.Core.Dtos.DepartmentDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,9 @@ namespace HMS.Core.Services
         string GetUserIdFromToken();
         Task<string> CreateAppointmentAsync(CreateAppointmentDto dto);
         Task<bool> ConfirmAppointmentAsync(Guid id, string action);
+        Task<IEnumerable<GetAppointmentDto>> GetAllAsync();
+        Task<IEnumerable<GetAppointmentDto>> GetByDoctorIdAsync(Guid id);
+        Task<bool> UpdateAsync(UpdateAppointmentDto dto);
+        Task<bool> DeleteAsync(Guid id);
     }
 }

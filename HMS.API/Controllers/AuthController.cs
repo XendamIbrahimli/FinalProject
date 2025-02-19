@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HMS.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController(IAuthService _service) : ControllerBase
     {
-        [HttpPost("AsPatience")]
+        [HttpPost]
         public async Task<IActionResult> RegisterPatience(PatienceCreateDto dto)
         {
             var result = await _service.RegisterAsPatienceAsync(dto);
@@ -26,7 +26,7 @@ namespace HMS.API.Controllers
 
         }
 
-        [HttpPost("AsDoctor")]
+        [HttpPost]
         public async Task<IActionResult> RegisterDoctor(DoctorCreateDto dto)
         {
             var result = await _service.RegisterAsDoctorAsync(dto);
@@ -37,7 +37,7 @@ namespace HMS.API.Controllers
             return Ok("Check your email and confirm!");
 
         }
-        [HttpPost("ConfirmDoctorAccount")]
+        [HttpPost]
         [Authorize(Roles =RoleConstants.Admin)]
         public async Task<IActionResult> ConfirmDoctorAccount(Guid id)
         {
@@ -48,7 +48,7 @@ namespace HMS.API.Controllers
             }
             return Ok("Account successfully confirmed");
         }
-        [HttpPost("Login")]
+        [HttpPost]
         public async Task<IActionResult> Login([FromBody]LoginDto dto)
         {
             return Ok(await _service.LoginAsync(dto));

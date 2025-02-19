@@ -1,5 +1,7 @@
 ﻿using HMS.BL.Enums;
+using HMS.BL.Helpers;
 using HMS.Core.Dtos.AppointmentDtos;
+using HMS.Core.Dtos.DepartmentDtos;
 using HMS.Core.Exceptions;
 using HMS.Core.Models;
 using HMS.Core.Repositories;
@@ -79,11 +81,92 @@ namespace HMS.BL.Services
 
         }
 
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            Appointment appointment = await _AppRepo.GetByIdAsync(id);
+            if (appointment == null)
+                throw new NotFoundException("Appointment not found");
+
+            appointment.IsDeleted = true;
+            await _AppRepo.SaveAsync();
+            return true;
+        }
+
+        public async Task<IEnumerable<GetAppointmentDto>> GetAllAsync()
+        {
+            var appointments = await _AppRepo.GetAll().Include(x=>x.Patience).Include(x=>x.Doctor).ToListAsync();
+
+            if (!appointments.Any() || appointments == null)
+                throw new NotFoundException("Appointment doesn't exist");
+
+            var appointmentsDtos = appointments.Select(x => new GetAppointmentDto
+            {
+                Status=x.Status,
+                DateTime = x.DateTime,
+                DoctorName=x.Doctor.Fullname,
+                PatienceName=x.Patience.Fullname
+            }).ToList();
+
+            return appointmentsDtos;
+        }
+
+        public async Task<IEnumerable<GetAppointmentDto>> GetByDoctorIdAsync(Guid id)
+        {
+            var doctor = await _DocRepo.GetByIdAsync(id);
+            if (doctor == null)
+                throw new NotFoundException("Doctor doesn't exist");
+
+            var appointments = await _AppRepo.GetWhere(x=>x.DoctorId==id).Include(x => x.Patience).Include(x => x.Doctor).ToListAsync();
+
+            if (!appointments.Any() || appointments == null)
+                throw new NotFoundException("Appointment doesn't exist");
+
+            var appointmentsDtos = appointments.Select(x => new GetAppointmentDto
+            {
+                Status = x.Status,
+                DateTime = x.DateTime,
+                DoctorName = x.Doctor!.Fullname,
+                PatienceName = x.Patience!.Fullname
+            }).ToList();
+
+            return appointmentsDtos;
+
+        }
+
         public string GetUserIdFromToken()
         {
             var claimsIdentity = (ClaimsIdentity)_http.HttpContext.User.Identity;
             var userIdClaim=claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             return userIdClaim?.Value;
+        }
+
+        public async Task<bool> UpdateAsync(UpdateAppointmentDto dto)
+        {
+            var appointment=await _AppRepo.GetWhere(x=>x.Id==dto.AppointmentId).Include(x=>x.Doctor).FirstOrDefaultAsync();
+            if (appointment == null)
+                throw new NotFoundException("Appointment doesn't exist");
+
+            if (dto == null)
+                throw new NullReferenceException();
+
+            if (appointment.Status != nameof(AppointmentStatus.Waiting))
+                throw new NotPermissionException("This appointment already confiremd or canceled by doctor");
+
+            var newDoctor = await _DocRepo.GetWhere(x => x.Fullname == dto.NewDoctorName).FirstOrDefaultAsync();
+            if (newDoctor == null)
+                throw new NotFoundException("This doctor name doesn't exist");
+            if (newDoctor.Fullname == appointment.Doctor!.Fullname)
+                throw new NotPermissionException("This is the same doctor");
+
+            appointment.DoctorId = newDoctor.Id;
+            appointment.UpdatedTime=DateTime.UtcNow;
+            appointment.DateTime=dto.NewDateTime;
+
+            bool result= _AppRepo.Update(appointment);
+            await _AppRepo.SaveAsync();
+
+            return result;
+
         }
     }
 }
