@@ -17,6 +17,7 @@ namespace HMS.DAL.Context
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Patience> Patiences { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<PatienceComment> PatienceComments { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -25,6 +26,7 @@ namespace HMS.DAL.Context
             builder.ApplyConfiguration(new AppointmentConfiguration());
             builder.ApplyConfiguration(new PatienceConfiguration());
             builder.ApplyConfiguration(new DepartmentConfiguration());
+            builder.ApplyConfiguration(new PatienceCommentConfiguration());
             base.OnModelCreating(builder);
         }
 

@@ -19,11 +19,13 @@ namespace HMS.API.Registrations
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IPatienceRepository, PatienceRepository>();
+            services.AddScoped<IPatienceCommentRepository, PatienceCommentRepository>();
 
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IPatienceCommentService, PatienceCommentService>();
 
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
