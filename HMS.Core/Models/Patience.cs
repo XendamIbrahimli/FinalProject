@@ -11,6 +11,7 @@ namespace HMS.Core.Models
     {
         public string Fullname { get; set; } = null!;
         public string Gender { get; set; } = null!;
+        public string ImageUrl { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
         public ICollection<Appointment>? Appointments { get; set; }
         public string? UserId { get; set; }

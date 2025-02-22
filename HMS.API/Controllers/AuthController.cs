@@ -53,6 +53,14 @@ namespace HMS.API.Controllers
         {
             return Ok(await _service.LoginAsync(dto));
         }
+        [HttpGet]
+        [Authorize]
+        public IActionResult LogOut()
+        {
+            return Ok( _service.LogOut());
+            //The server doesn't store the token, so there's nothing to delete. It processing on the frontend
+        }
+
 
     }
 }

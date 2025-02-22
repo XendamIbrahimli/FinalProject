@@ -18,6 +18,9 @@ namespace HMS.DAL.Configurations
             builder.Property(x=>x.Fullname)
                 .IsRequired()
                 .HasMaxLength(32);
+            builder.Property(x => x.ImageUrl)
+                .IsRequired()
+                .HasMaxLength(256);
             builder.Property(x=>x.Gender)
                 .IsRequired()
                 .HasMaxLength(32);

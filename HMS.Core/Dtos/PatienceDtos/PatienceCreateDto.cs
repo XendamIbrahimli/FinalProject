@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace HMS.Core.Dtos.PatienceDtos
     {
         [MaxLength(32)]
         public string Fullname { get; set; } = null!;
+        public IFormFile ImageUrl { get; set; }=null!;
         [MaxLength(32)]
         public string Gender { get; set; } = null!;
         public DateTime DateOfBirth { get; set; }
@@ -24,5 +26,6 @@ namespace HMS.Core.Dtos.PatienceDtos
         public string Password { get; set; } = null!;
         [MaxLength(32), DataType(DataType.Password),Compare("Password")]
         public string RePassword { get; set; } = null!;
+
     }
 }

@@ -91,10 +91,10 @@ namespace HMS.BL.Services
 
         }
 
-        public Task<bool> LogOutAsync()
+        public string LogOut()
         {
-            throw new NotImplementedException();
-        }
+            return "Logged out successfully";
+;        }
 
         public async Task<bool> RegisterAsDoctorAsync(DoctorCreateDto dto)
         {
@@ -169,6 +169,7 @@ namespace HMS.BL.Services
             if (await _userManager.FindByNameAsync(dto.Username)!=null)
                 throw new ExistException("This Username already exist");
 
+            var filepath = await FileUpload.UploadFileAsync(dto.ImageUrl, "PatienceImages");
 
             User user=new User()
             {
@@ -199,7 +200,8 @@ namespace HMS.BL.Services
                 Fullname=dto.Fullname,
                 Gender=dto.Gender,
                 DateOfBirth=dto.DateOfBirth,
-                UserId=user.Id
+                UserId=user.Id,
+                ImageUrl=filepath
             };
 
             bool f=await _PatienceRepo.AddAsync(patience);

@@ -16,6 +16,6 @@ namespace HMS.Core.Services
         Task<bool> ConfirmDoctorAccountAsync(Guid id);
         Task<string> LoginAsync(LoginDto dto);
         string GenerateToken(string userId, string username, string email, string role);
-        Task<bool> LogOutAsync();
+        string LogOut();
     }
 }
