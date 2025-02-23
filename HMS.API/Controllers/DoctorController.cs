@@ -1,4 +1,5 @@
-﻿using HMS.Core.Dtos.DoctorDtos;
+﻿using HMS.BL.Helpers;
+using HMS.Core.Dtos.DoctorDtos;
 using HMS.Core.Dtos.PatienceDtos;
 using HMS.Core.Repositories;
 using HMS.Core.Services;
@@ -10,22 +11,25 @@ namespace HMS.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    
     public class DoctorController(IDoctorServcie _service) : ControllerBase
     {
         [HttpGet]
+        [Authorize(Roles = RoleConstants.AdminModeratorDoctor)]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _service.GetAll());
 
         }
         [HttpGet]
+        [Authorize(Roles = RoleConstants.AdminModeratorDoctor)]
         public async Task<IActionResult> GetById(Guid DoctorID)
         {
             return Ok(await _service.GetByIdAsync(DoctorID));
 
         }
         [HttpPut]
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Doctor)]
         public async Task<IActionResult> Update(DoctorUpdateDto dto)
         {
             var result = await _service.UpdateAsync(dto);
@@ -36,7 +40,7 @@ namespace HMS.API.Controllers
             return Ok("Doctor Updated successfully");
         }
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Doctor)]
         public async Task<IActionResult> Delete()
         {
             return Ok(await _service.DeleteAsync());

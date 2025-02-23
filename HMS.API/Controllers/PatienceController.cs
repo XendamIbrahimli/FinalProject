@@ -12,19 +12,21 @@ namespace HMS.API.Controllers
     public class PatienceController(IPatienceService _service) : ControllerBase
     {
         [HttpGet]
+        [Authorize(Roles =RoleConstants.AdminAndModerator)]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _service.GetAll());
 
         }
         [HttpGet]
+        [Authorize(Roles = RoleConstants.AdminAndModerator)]
         public async Task<IActionResult> GetById(Guid PatienceId)
         {
             return Ok(await _service.GetByIdAsync(PatienceId));
 
         }
         [HttpPut]
-        [Authorize]
+        [Authorize(Roles =RoleConstants.Patience)]
         public async Task<IActionResult> Update(PatienceUpdateDto dto)
         {
             var result = await _service.UpdateAsync(dto);
@@ -35,7 +37,7 @@ namespace HMS.API.Controllers
             return Ok("Patient Updated successfully");
         }
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = RoleConstants.Patience)]
         public async Task<IActionResult> Delete()
         {
             return Ok(await _service.DeleteAsync());

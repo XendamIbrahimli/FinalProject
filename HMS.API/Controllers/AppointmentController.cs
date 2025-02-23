@@ -30,12 +30,13 @@ namespace HMS.API.Controllers
             return Ok(await _appService.GetAllAsync());
         }
         [HttpGet]
-        [Authorize(Roles = RoleConstants.Doctor)]
+        [Authorize(Roles = RoleConstants.AdminModeratorDoctor)]
         public async Task<IActionResult> GetByDoctorId(Guid id)
         {
             return Ok(await _appService.GetByDoctorIdAsync(id));
         }
         [HttpPut]
+        [Authorize(RoleConstants.Doctor)]
         public async Task<IActionResult> Update([FromForm]UpdateAppointmentDto dto)
         {
             bool result = await _appService.UpdateAsync(dto);
@@ -46,6 +47,7 @@ namespace HMS.API.Controllers
             return Ok("Appointment Updated successfully");
         }
         [HttpDelete]
+        [Authorize(RoleConstants.Doctor)]
         public async Task<IActionResult> Delete([FromForm] Guid id)
         {
             return Ok(await _appService.DeleteAsync(id));

@@ -14,6 +14,7 @@ namespace HMS.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize(Roles = RoleConstants.AdminAndModerator)]
     public class DepartmentController(IDepartmentService _service) : ControllerBase
     {
         [HttpPost]
@@ -26,19 +27,7 @@ namespace HMS.API.Controllers
             }
             return Ok("Department Created successfully");
         }
-        //[HttpPost]
-        //public async Task<IActionResult> CreateRange([FromForm]List<DepartmentCreateDto> list)
-        //{
-        //        bool result = await _service.CreateRangeAsync(list);
-        //        if (!result)
-        //        {
-        //            return BadRequest("Failed to create department");
-        //        }
-        //        return Ok("Departments Created successfully");
-
-        //}
         [HttpGet]
-        [Authorize(Roles =RoleConstants.AdminAndModerator)]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _service.GetAll());

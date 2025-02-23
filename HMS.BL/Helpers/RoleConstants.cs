@@ -14,6 +14,7 @@ namespace HMS.BL.Helpers
         public const string Moderator = "Moderator";
 
         public const string AdminAndModerator = Admin + "," + Moderator;
+        public const string AdminModeratorDoctor = Admin + "," + Moderator+","+Doctor;
 
     }
 }
