@@ -14,7 +14,7 @@ namespace HMS.Core.Dtos.PatienceDtos
         public string ImageUrl { get; set; } = null!;
         [MaxLength(32)]
         public string Gender { get; set; } = null!;
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [MaxLength(32)]
         public string Username { get; set; } = null!;
         [MaxLength(64), EmailAddress]

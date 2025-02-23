@@ -27,6 +27,7 @@ namespace HMS.API.Registrations
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IPatienceCommentService, PatienceCommentService>();
             services.AddScoped<IPatienceService, PatienceService>();
+            services.AddScoped<IDoctorServcie, DoctorService>();
 
             services.AddHttpContextAccessor();
             services.AddMemoryCache();

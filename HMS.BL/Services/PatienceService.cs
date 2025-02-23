@@ -106,6 +106,15 @@ namespace HMS.BL.Services
             if (!string.IsNullOrEmpty(dto.PhoneNumber))
                 User!.PhoneNumber=dto.PhoneNumber;
 
+            if (!string.IsNullOrEmpty(dto.Gender))
+                Patient.Gender = dto.Gender;
+
+            if (dto.DateOfBirth!=null)
+                Patient!.DateOfBirth = dto!.DateOfBirth;
+
+            if (!string.IsNullOrEmpty(dto.Gender))
+                Patient.Gender = dto.Gender;
+
             if (!string.IsNullOrEmpty(dto.Password)&& dto.Password==dto.RePassword)
             {
                 var resetToken = await _userManager.GeneratePasswordResetTokenAsync(User);
