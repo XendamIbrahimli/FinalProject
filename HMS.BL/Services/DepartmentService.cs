@@ -75,9 +75,9 @@ namespace HMS.BL.Services
             return departmentsDtos;
         }
 
-        public async Task<DepartmentGetDto> GetByIdAsync(Guid id)
+        public async Task<DepartmentGetDto> GetByIdAsync(Guid DepartmentId)
         {
-            var department=await _repo.GetByIdAsync(id);
+            var department=await _repo.GetByIdAsync(DepartmentId);
             if (department == null)
                 throw new NotFoundException("department not found");
 
